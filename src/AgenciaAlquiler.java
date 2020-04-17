@@ -1,8 +1,11 @@
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * La clase guarda en una colección List (un ArrayList) la flota de vehículos
@@ -29,8 +32,10 @@ public class AgenciaAlquiler {
 	 * añade un nuevo vehículo solo si no existe
 	 * 
 	 */
-	public void addVehiculo() {
-
+	public void addVehiculo(Vehiculo v) {
+		if (!flota.contains(v)) {
+			flota.add(v);
+		}
 	}
 
 	/**
@@ -45,9 +50,20 @@ public class AgenciaAlquiler {
 	 * Asumimos todos los datos correctos. Puede haber espacios antes y después
 	 * de cada dato
 	 */
-	private Vehiculo obtenerVehiculo() {
-
-		return null;
+	private Vehiculo obtenerVehiculo(String str) {
+		String[] aux = str.split(",");
+		for(int i = 0; i < aux.length; i++) {
+			aux[i]= aux[i].trim();
+		}
+		Vehiculo v = null;
+		if (aux[0] == "C") {
+			Coche c = new Coche(aux[1], aux[2], aux[3], Double.valueOf(aux[4]), Integer.valueOf(aux[5]));
+			v = c;
+		} else if (aux[0] == "F") {
+			Furgoneta f = new Furgoneta(aux[1], aux[2], aux[3], Double.valueOf(aux[4]), Double.valueOf(aux[5]));
+			v = f;
+		}
+		return v;
 	}
 
 	/**
@@ -76,8 +92,12 @@ public class AgenciaAlquiler {
 	 */
 	@Override
 	public String toString() {
-
-		return null;
+		StringBuilder sb = new StringBuilder("Veh�culos en alquiler de la agencia" + 
+				nombre + "\nTotal veh�culos: " + flota.size() + "\n\n");
+		for (Vehiculo v : flota) {
+			sb.append(v + "\n\n-----------------------------------------------------");
+		}
+		return sb.toString();
 
 	}
 
@@ -88,8 +108,13 @@ public class AgenciaAlquiler {
 	 *  
 	 */
 	public String buscarCoches() {
-
-		return null;
+		StringBuilder sb = new StringBuilder("Coches de alquiler en la agencia\n\n");
+		for (Vehiculo v : flota) {
+			if(v.getClass().equals(Coche.class)) {
+				sb.append(v + "\n\n-----------------------------------------------------");
+			}
+		}
+		return sb.toString();
 
 	}
 
@@ -99,8 +124,19 @@ public class AgenciaAlquiler {
 	 * 
 	 */
 	public List<Coche> cochesOrdenadosMatricula() {
-
-		return null;
+		List<Coche> coches = new ArrayList<>();
+		Iterator<Vehiculo> it = flota.iterator();
+		while(it.hasNext()) {
+			Vehiculo v = it.next();
+			if(v.getClass().equals(Coche.class)){
+				Coche c = (Coche) v;
+				if(c.getPlazas() > 4) {
+					coches.add(c);
+				}
+			}
+		Collections.sort(Comparador);
+		}
+		return coches;
 	}
 
 	/**

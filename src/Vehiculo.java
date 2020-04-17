@@ -15,7 +15,7 @@
  * misma matrÃ­cula
  * 
  */
-public class Vehiculo {
+public abstract class Vehiculo {
 	private String matricula;
 	private String marca;
 	private String modelo;
@@ -33,6 +33,49 @@ public class Vehiculo {
 
 	}
 
+	public String getMatricula() {
+		return matricula;
+	}
+
+
+	public String getMarca() {
+		return marca;
+	}
+
+
+	public String getModelo() {
+		return modelo;
+	}
+
+
+	public double getPrecioDia() {
+		return precioDia;
+	}
+	
+	public double calcularPrecioAlquiler(int dias) {
+		return dias * getPrecioDia();
+	}
+	
+	/**
+	 * Redefinimos equals 
+	 * @override
+	 */
+	@Override
+	public boolean equals(Object obj) {
+
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (this.getClass() != obj.getClass()) {
+			return false;
+		}
+		Vehiculo veh = (Vehiculo) obj;
+		return this.matricula.equalsIgnoreCase(veh.getMatricula());
+	}
+	
 	/**
 	 * RedefiniciÃ³n de hashCode()
 	 * 
@@ -40,6 +83,21 @@ public class Vehiculo {
 	@Override
 	public int hashCode() {
 		return matricula.hashCode() * 13;
+	}
+	
+	/**
+	* implementación del método del interface Comparable
+	*/
+	public int compareTo(Vehiculo veh) {
+
+		return this.matricula.compareToIgnoreCase(veh.getMatricula());
+	}
+
+	@Override
+	public String toString() {
+		return this.getClass() + "\n" + "Matricula: " + this.getMatricula() + " | Marca: " + 
+				this.getMarca() + " | Modelo: " + this.getModelo() + "\nPrecio día alquiler: " + 
+				this.getPrecioDia() + "€";
 	}
 
 }
